@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using TechStore.DTO;
+using TechStore.DTO;           // тут вже є Category
 using TechStore.DAL.Interfaces;
 
 namespace TechStore.DAL
@@ -8,6 +8,7 @@ namespace TechStore.DAL
     {
         public Category GetByName(string name)
         {
+            // _data припускаємо — це список Category у GenericDAL
             return _data.FirstOrDefault(c => c.CategoryName == name);
         }
     }

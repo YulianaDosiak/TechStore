@@ -3,14 +3,8 @@
     public class Order
     {
         public int OrderId { get; set; }
-        public DateTime OrderDate { get; set; } = DateTime.Now;
-        public decimal TotalAmount { get; set; }
-
-        // FK
-        public int UserId { get; set; }
-
-        // Навігація
-        public User? User { get; set; }
-        public List<OrderItem>? OrderItems { get; set; }
+        public int UserId { get; set; }                // хто зробив замовлення
+        public DateTime OrderDate { get; set; }
+        public bool IsActive { get; set; }             // 🔹 потрібно у DAL
     }
 }
