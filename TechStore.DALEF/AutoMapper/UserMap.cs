@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Model = TechStore.DALEF.Models;
+using DTO = TechStore.DTO;
 
-namespace TechStore.DALEF.AutoMapper
+public class UserMap : Profile
 {
-    internal class UserMap
+    public UserMap()
     {
+        CreateMap<Model.User, DTO.User>().ReverseMap();
     }
 }

@@ -5,8 +5,6 @@ VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.DAL", "TechStore.DAL\TechStore.DAL.csproj", "{26C2462D-7740-4915-AF88-82605F64F1C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore", "TechStore\TechStore.csproj", "{A6B13AF6-EC76-4BDF-A337-59E5DBB32EDC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.DTO", "TechStore.DTO\TechStore.DTO.csproj", "{A4F5A764-D551-40F8-8F1C-71761E3394C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.ConsoleDemo", "TechStore.ConsoleDemo\TechStore.ConsoleDemo.csproj", "{D65AE589-E279-F4DE-AE9A-7C35624C2A8B}"
@@ -23,10 +21,6 @@ Global
 		{26C2462D-7740-4915-AF88-82605F64F1C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26C2462D-7740-4915-AF88-82605F64F1C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26C2462D-7740-4915-AF88-82605F64F1C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A6B13AF6-EC76-4BDF-A337-59E5DBB32EDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A6B13AF6-EC76-4BDF-A337-59E5DBB32EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6B13AF6-EC76-4BDF-A337-59E5DBB32EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A6B13AF6-EC76-4BDF-A337-59E5DBB32EDC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4F5A764-D551-40F8-8F1C-71761E3394C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A4F5A764-D551-40F8-8F1C-71761E3394C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4F5A764-D551-40F8-8F1C-71761E3394C7}.Release|Any CPU.ActiveCfg = Release|Any CPU

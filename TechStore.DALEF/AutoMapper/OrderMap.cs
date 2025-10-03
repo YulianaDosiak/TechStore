@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Model = TechStore.DALEF.Models;
+using DTO = TechStore.DTO;
 
-namespace TechStore.DALEF.AutoMapper
+public class OrderMap : Profile
 {
-    internal class OrderMap
+    public OrderMap()
     {
+        CreateMap<Model.Order, DTO.Order>().ReverseMap();
     }
 }

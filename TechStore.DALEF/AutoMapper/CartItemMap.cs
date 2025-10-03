@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Model = TechStore.DALEF.Models;
+using DTO = TechStore.DTO;
 
-namespace TechStore.DALEF.AutoMapper
+public class CartItemMap : Profile
 {
-    internal class CartItemMap
+    public CartItemMap()
     {
+        CreateMap<Model.CartItem, DTO.CartItem>().ReverseMap();
     }
 }
