@@ -1,15 +1,97 @@
-﻿using System.Linq;
-using TechStore.DTO;           // тут вже є Category
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 using TechStore.DAL.Interfaces;
+using TechStore.DTO;
 
-namespace TechStore.DAL
+namespace TechStore.DAL.Concrete
 {
-    public class CategoryDAL : GenericDAL<Category>, ICategoryDAL
+    public class CategoryDAL : ICategoryDAL
     {
-        public Category GetByName(string name)
+        private readonly TechStoreDbContext _context;
+
+        public CategoryDAL(TechStoreDbContext context)
         {
-            // _data припускаємо — це список Category у GenericDAL
-            return _data.FirstOrDefault(c => c.CategoryName == name);
+            _context = context;
+        }
+
+        public IEnumerable<Category> GetAll()
+        {
+            var list = new List<Category>();
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM Categories", conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Category
+                        {
+                            CategoryID = (int)reader["CategoryID"],
+                            CategoryName = reader["CategoryName"].ToString()
+                        });
+                    }
+                }
+            }
+            return list;
+        }
+
+        public Category GetById(int id)
+        {
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM Categories WHERE CategoryID=@id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Category
+                        {
+                            CategoryID = (int)reader["CategoryID"],
+                            CategoryName = reader["CategoryName"].ToString()
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void Insert(Category c)
+        {
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(
+                    "INSERT INTO Categories (CategoryName) VALUES (@n)", conn);
+                cmd.Parameters.AddWithValue("@n", c.CategoryName);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Update(Category c)
+        {
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(
+                    "UPDATE Categories SET CategoryName=@n WHERE CategoryID=@id", conn);
+                cmd.Parameters.AddWithValue("@n", c.CategoryName);
+                cmd.Parameters.AddWithValue("@id", c.CategoryID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand("DELETE FROM Categories WHERE CategoryID=@id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }

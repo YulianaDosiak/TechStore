@@ -1,9 +1,14 @@
 ﻿using TechStore.DTO;
+using System.Collections.Generic;
 
 namespace TechStore.DAL.Interfaces
 {
-    public interface ICartDAL : IGenericDAL<Cart>
+    public interface ICartDAL
     {
-        Cart GetByUserId(int userId);
+        IEnumerable<Cart> GetAll();
+        Cart GetById(int id);
+        void Insert(Cart cart);
+        void Update(Cart cart);
+        void Delete(int id);
     }
 }

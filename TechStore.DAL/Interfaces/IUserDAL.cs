@@ -1,10 +1,14 @@
 ﻿using TechStore.DTO;
+using System.Collections.Generic;
 
 namespace TechStore.DAL.Interfaces
 {
-    public interface IUserDAL : IGenericDAL<User>
+    public interface IUserDAL
     {
-        User GetByUsername(string username);
-        User GetByEmail(string email);
+        IEnumerable<User> GetAll();
+        User GetById(int id);
+        void Insert(User user);
+        void Update(User user);
+        void Delete(int id);
     }
 }

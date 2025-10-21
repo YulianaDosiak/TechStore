@@ -3,6 +3,6 @@
     public class Cart
     {
         public int CartId { get; set; }
-        public int UserId { get; set; }                // кому належить кошик
+        public int UserId { get; set; }
     }
 }

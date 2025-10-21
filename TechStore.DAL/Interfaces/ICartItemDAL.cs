@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 namespace TechStore.DAL.Interfaces
 {
-    public interface ICartItemDAL : IGenericDAL<CartItem>
+    public interface ICartItemDAL
     {
-        List<CartItem> GetByCartId(int cartId);
-        bool RemoveFromCart(int cartId, int productId);
+        IEnumerable<CartItem> GetAll();
+        CartItem GetById(int id);
+        void Insert(CartItem item);
+        void Update(CartItem item);
+        void Delete(int id);
     }
 }

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 
 namespace TechStore.DAL.Interfaces
 {
-    public interface IProductDAL : IGenericDAL<Product>
+    public interface IProductDAL
     {
-        List<Product> GetByCategory(int categoryId);
-        List<Product> SearchByName(string name);
+        IEnumerable<Product> GetAll();
+        Product GetById(int id);
+        void Insert(Product product);
+        void Update(Product product);
+        void Delete(int id);
     }
 }

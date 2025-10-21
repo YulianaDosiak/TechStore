@@ -5,7 +5,7 @@ using TechStore.DAL.Interfaces;
 
 namespace TechStore.DAL
 {
-    public class CartItemDAL : GenericDAL<CartItem>, ICartItemDAL
+    public class CartItemDAL : OrderItemDAL<CartItem>, ICartItemDAL
     {
         public List<CartItem> GetByCartId(int cartId)
         {
