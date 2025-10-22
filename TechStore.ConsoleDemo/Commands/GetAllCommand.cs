@@ -1,22 +1,45 @@
 ﻿using System;
-using System.Windows.Input;
+using System.Linq; 
 using TechStore.DAL;
-using TradingCompany.DAL.Concrete;
-using TradingCompany.Models;
+using TechStore.DAL.Concrete;
+using TechStore.DAL.Interfaces;
 
-namespace TradingCompany.Commands
+namespace TechStore.ConsoleDemo.Commands
 {
     public class GetAllCommand : ICommand
     {
+        private readonly TechStoreDbContext _context;
+
+        public GetAllCommand(TechStoreDbContext context)
+        {
+            _context = context;
+        }
+
         public void Execute()
         {
-            var categoryDal = new CategoryDAL();
-            var allCategories = categoryDal.GetAll();
+            ICategoryDAL categoryDal = new CategoryDAL(_context);
 
-            Console.WriteLine("All categories:");
-            foreach (var cat in allCategories)
+            try
             {
-                Console.WriteLine($"Id: {cat.Id}, Name: {cat.Name}");
+                var allCategories = categoryDal.GetAll();
+
+                Console.WriteLine("\n===== All Categories (Demo) =====");
+                if (!allCategories.Any())
+                {
+                    Console.WriteLine("No categories found.");
+                }
+                else
+                {
+                    foreach (var cat in allCategories)
+                    {
+                        Console.WriteLine($"Id: {cat.CategoryID}, Name: {cat.CategoryName}");
+                    }
+                }
+                Console.WriteLine("=================================\n");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving categories: {ex.Message}");
             }
         }
     }

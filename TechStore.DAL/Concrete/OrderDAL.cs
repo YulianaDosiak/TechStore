@@ -8,17 +8,17 @@ namespace TechStore.DAL.Concrete
 {
     public class OrderDAL : IOrderDAL
     {
-        private readonly string _connectionString;
+        private readonly TechStoreDbContext _context;
 
-        public OrderDAL(string connectionString)
+        public OrderDAL(TechStoreDbContext context)
         {
-            _connectionString = connectionString;
+            _context = context;
         }
 
         public IEnumerable<Order> GetAll()
         {
             var list = new List<Order>();
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand("SELECT * FROM Orders", conn);
@@ -28,8 +28,8 @@ namespace TechStore.DAL.Concrete
                     {
                         list.Add(new Order
                         {
-                            OrderID = (int)reader["OrderID"],
-                            UserID = (int)reader["UserID"],
+                            OrderID = (int)reader["OrderID"], 
+                            UserID = (int)reader["UserID"],   
                             OrderDate = (DateTime)reader["OrderDate"],
                             TotalAmount = (decimal)reader["TotalAmount"]
                         });
@@ -42,7 +42,7 @@ namespace TechStore.DAL.Concrete
         public Order GetById(int id)
         {
             Order order = null;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand("SELECT * FROM Orders WHERE OrderID=@id", conn);
@@ -53,8 +53,8 @@ namespace TechStore.DAL.Concrete
                     {
                         order = new Order
                         {
-                            OrderID = (int)reader["OrderID"],
-                            UserID = (int)reader["UserID"],
+                            OrderID = (int)reader["OrderID"],  
+                            UserID = (int)reader["UserID"],  
                             OrderDate = (DateTime)reader["OrderDate"],
                             TotalAmount = (decimal)reader["TotalAmount"]
                         };
@@ -66,7 +66,7 @@ namespace TechStore.DAL.Concrete
 
         public void Insert(Order o)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand(
@@ -80,12 +80,12 @@ namespace TechStore.DAL.Concrete
 
         public void Update(Order o)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand(
                     "UPDATE Orders SET UserID=@u, OrderDate=@d, TotalAmount=@t WHERE OrderID=@id", conn);
-                cmd.Parameters.AddWithValue("@u", o.UserID);
+                cmd.Parameters.AddWithValue("@u", o.UserID); 
                 cmd.Parameters.AddWithValue("@d", o.OrderDate);
                 cmd.Parameters.AddWithValue("@t", o.TotalAmount);
                 cmd.Parameters.AddWithValue("@id", o.OrderID);
@@ -95,7 +95,7 @@ namespace TechStore.DAL.Concrete
 
         public void Delete(int id)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand("DELETE FROM Orders WHERE OrderID=@id", conn);

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.ConsoleDemo", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.DALEF", "TechStore.DALEF\TechStore.DALEF.csproj", "{A64CF5CB-D914-47D4-813F-EC63C3F6E9F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechStore.DAL.Tests", "TechStore.DAL.Tests\TechStore.DAL.Tests.csproj", "{8E22E4AD-BB36-4F9E-B287-DEB65D94F6EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A64CF5CB-D914-47D4-813F-EC63C3F6E9F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A64CF5CB-D914-47D4-813F-EC63C3F6E9F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A64CF5CB-D914-47D4-813F-EC63C3F6E9F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E22E4AD-BB36-4F9E-B287-DEB65D94F6EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E22E4AD-BB36-4F9E-B287-DEB65D94F6EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E22E4AD-BB36-4F9E-B287-DEB65D94F6EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E22E4AD-BB36-4F9E-B287-DEB65D94F6EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

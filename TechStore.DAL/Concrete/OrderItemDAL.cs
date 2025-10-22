@@ -2,22 +2,23 @@
 using System.Data.SqlClient;
 using TechStore.DTO;
 using TechStore.DAL.Interfaces;
+using System;
 
 namespace TechStore.DAL.Concrete
 {
     public class OrderItemDAL : IOrderItemDAL
     {
-        private readonly string _connectionString;
+        private readonly TechStoreDbContext _context;
 
-        public OrderItemDAL(string connectionString)
+        public OrderItemDAL(TechStoreDbContext context)
         {
-            _connectionString = connectionString;
+            _context = context;
         }
 
         public IEnumerable<OrderItem> GetAll()
         {
             var list = new List<OrderItem>();
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand("SELECT * FROM OrderItems", conn);
@@ -42,7 +43,7 @@ namespace TechStore.DAL.Concrete
         public OrderItem GetById(int id)
         {
             OrderItem item = null;
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand("SELECT * FROM OrderItems WHERE OrderItemID=@id", conn);
@@ -67,7 +68,7 @@ namespace TechStore.DAL.Concrete
 
         public void Insert(OrderItem item)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand(
@@ -82,7 +83,7 @@ namespace TechStore.DAL.Concrete
 
         public void Update(OrderItem item)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand(
@@ -98,7 +99,7 @@ namespace TechStore.DAL.Concrete
 
         public void Delete(int id)
         {
-            using (var conn = new SqlConnection(_connectionString))
+            using (var conn = _context.GetConnection())
             {
                 conn.Open();
                 var cmd = new SqlCommand("DELETE FROM OrderItems WHERE OrderItemID=@id", conn);

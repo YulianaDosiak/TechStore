@@ -1,26 +1,106 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using TechStore.DTO;
+using System.Data.SqlClient;
 using TechStore.DAL.Interfaces;
+using TechStore.DTO;
 
-namespace TechStore.DAL
+namespace TechStore.DAL.Concrete
 {
-    public class CartItemDAL : OrderItemDAL<CartItem>, ICartItemDAL
+    public class CartItemDAL : ICartItemDAL
     {
-        public List<CartItem> GetByCartId(int cartId)
+        private readonly TechStoreDbContext _context;
+
+        public CartItemDAL(TechStoreDbContext context)
         {
-            return _data.Where(ci => ci.CartId == cartId).ToList();
+            _context = context;
         }
 
-        public bool RemoveFromCart(int cartId, int productId)
+        public IEnumerable<CartItem> GetAll()
         {
-            var item = _data.FirstOrDefault(ci => ci.CartId == cartId && ci.ProductId == productId);
-            if (item != null)
+            var list = new List<CartItem>();
+            using (var conn = _context.GetConnection())
             {
-                _data.Remove(item);
-                return true;
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM CartItems", conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new CartItem
+                        {
+                            CartItemID = (int)reader["CartItemID"],
+                            CartID = (int)reader["CartID"], 
+                            ProductID = (int)reader["ProductID"],
+                            Quantity = (int)reader["Quantity"]
+                        });
+                    }
+                }
             }
-            return false;
+            return list;
+        }
+
+        public CartItem GetById(int id)
+        {
+            CartItem item = null;
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand("SELECT * FROM CartItems WHERE CartItemID=@id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        item = new CartItem
+                        {
+                            CartItemID = (int)reader["CartItemID"], 
+                            CartID = (int)reader["CartID"], 
+                            ProductID = (int)reader["ProductID"], 
+                            Quantity = (int)reader["Quantity"]
+                        };
+                    }
+                }
+            }
+            return item;
+        }
+
+        public void Insert(CartItem item)
+        {
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(
+                    "INSERT INTO CartItems (CartID, ProductID, Quantity) VALUES (@c, @p, @q)", conn);
+                cmd.Parameters.AddWithValue("@c", item.CartID);
+                cmd.Parameters.AddWithValue("@p", item.ProductID);
+                cmd.Parameters.AddWithValue("@q", item.Quantity);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Update(CartItem item)
+        {
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(
+                    "UPDATE CartItems SET CartID=@c, ProductID=@p, Quantity=@q WHERE CartItemID=@id", conn);
+                cmd.Parameters.AddWithValue("@c", item.CartID);
+                cmd.Parameters.AddWithValue("@p", item.ProductID);
+                cmd.Parameters.AddWithValue("@q", item.Quantity);
+                cmd.Parameters.AddWithValue("@id", item.CartItemID);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (var conn = _context.GetConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand("DELETE FROM CartItems WHERE CartItemID=@id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
