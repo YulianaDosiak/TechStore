@@ -20,16 +20,18 @@ namespace TechStore.DAL.Concrete
             using (var conn = _context.GetConnection())
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Categories", conn);
-                using (var reader = cmd.ExecuteReader())
+                using (var cmd = new SqlCommand("SELECT * FROM Categories", conn)) // ВИПРАВЛЕННЯ
                 {
-                    while (reader.Read())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        list.Add(new Category
+                        while (reader.Read())
                         {
-                            CategoryID = (int)reader["CategoryID"],
-                            CategoryName = reader["CategoryName"].ToString()
-                        });
+                            list.Add(new Category
+                            {
+                                CategoryID = (int)reader["CategoryID"],
+                                CategoryName = reader["CategoryName"].ToString()
+                            });
+                        }
                     }
                 }
             }
@@ -41,17 +43,19 @@ namespace TechStore.DAL.Concrete
             using (var conn = _context.GetConnection())
             {
                 conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Categories WHERE CategoryID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var reader = cmd.ExecuteReader())
+                using (var cmd = new SqlCommand("SELECT * FROM Categories WHERE CategoryID=@id", conn)) // ВИПРАВЛЕННЯ
                 {
-                    if (reader.Read())
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        return new Category
+                        if (reader.Read())
                         {
-                            CategoryID = (int)reader["CategoryID"],
-                            CategoryName = reader["CategoryName"].ToString()
-                        };
+                            return new Category
+                            {
+                                CategoryID = (int)reader["CategoryID"],
+                                CategoryName = reader["CategoryName"].ToString()
+                            };
+                        }
                     }
                 }
             }
@@ -63,10 +67,12 @@ namespace TechStore.DAL.Concrete
             using (var conn = _context.GetConnection())
             {
                 conn.Open();
-                var cmd = new SqlCommand(
-                    "INSERT INTO Categories (CategoryName) VALUES (@n)", conn);
-                cmd.Parameters.AddWithValue("@n", c.CategoryName);
-                cmd.ExecuteNonQuery();
+                using (var cmd = new SqlCommand( // ВИПРАВЛЕННЯ
+                    "INSERT INTO Categories (CategoryName) VALUES (@n)", conn))
+                {
+                    cmd.Parameters.AddWithValue("@n", c.CategoryName);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -75,11 +81,13 @@ namespace TechStore.DAL.Concrete
             using (var conn = _context.GetConnection())
             {
                 conn.Open();
-                var cmd = new SqlCommand(
-                    "UPDATE Categories SET CategoryName=@n WHERE CategoryID=@id", conn);
-                cmd.Parameters.AddWithValue("@n", c.CategoryName);
-                cmd.Parameters.AddWithValue("@id", c.CategoryID);
-                cmd.ExecuteNonQuery();
+                using (var cmd = new SqlCommand( // ВИПРАВЛЕННЯ
+                    "UPDATE Categories SET CategoryName=@n WHERE CategoryID=@id", conn))
+                {
+                    cmd.Parameters.AddWithValue("@n", c.CategoryName);
+                    cmd.Parameters.AddWithValue("@id", c.CategoryID);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -88,11 +96,12 @@ namespace TechStore.DAL.Concrete
             using (var conn = _context.GetConnection())
             {
                 conn.Open();
-                var cmd = new SqlCommand("DELETE FROM Categories WHERE CategoryID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
+                using (var cmd = new SqlCommand("DELETE FROM Categories WHERE CategoryID=@id", conn)) // ВИПРАВЛЕННЯ
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
     }
 }
-
