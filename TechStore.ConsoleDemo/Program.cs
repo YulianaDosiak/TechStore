@@ -10,15 +10,14 @@ namespace TechStore.ConsoleDemo
     {
         static void Main(string[] args)
         {
-            const string connectionString = "Data Source=localhost;Initial Catalog=TechStore;Integrated Security=True;TrustServerCertificate=True;";
-
+            const string connectionString = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=TechStore;Integrated Security=True;TrustServerCertificate=True;";
             try
             {
                 Console.WriteLine("Attempting to connect to the database...");
                 using (var context = new TechStoreDbContext(connectionString))
                 {
                     var categoryDal = new CategoryDAL(context);
-                    categoryDal.GetAll();
+                   // categoryDal.GetAll();
 
                     Console.WriteLine("Connection established successfully. Starting menu.");
                     var menu = new Menu(context);

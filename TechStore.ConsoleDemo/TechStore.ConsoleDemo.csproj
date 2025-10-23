@@ -6,7 +6,11 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+	<ItemGroup>	  <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+	</ItemGroup>
+
 	<ItemGroup>
+
 		<ProjectReference Include="..\TechStore.DAL\TechStore.DAL.csproj" />
 		<ProjectReference Include="..\TechStore.DTO\TechStore.DTO.csproj" />
 	</ItemGroup>
