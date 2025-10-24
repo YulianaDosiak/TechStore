@@ -8,7 +8,7 @@ namespace TechStore.ConsoleDemo
     {
         static void Main(string[] args)
         {
-            const string connectionString = "Data Source=localhost;Initial Catalog=TechStore;Integrated Security=True;TrustServerCertificate=True";
+            const string connectionString = "Data Source=localhost;Initial Catalog=TechStoreDB;Integrated Security=True;TrustServerCertificate=True";
 
             using (var context = new TechStoreDbContext(connectionString))
             {

@@ -1,4 +1,6 @@
-﻿namespace TechStore.DTO
+﻿using System;
+
+namespace TechStore.DTO
 {
     public class Category
     {

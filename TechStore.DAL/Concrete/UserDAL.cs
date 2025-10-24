@@ -62,6 +62,7 @@ namespace TechStore.DAL.Concrete
             return null;
         }
 
+
         public void Insert(User user)
         {
             using (var conn = _context.GetConnection())
