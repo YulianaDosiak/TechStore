@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 
 namespace TechStore.DAL
 {
-    // Реалізує IDisposable для керування ресурсами
     public class TechStoreDbContext : IDisposable
     {
         private readonly string _connectionString;
 
         public TechStoreDbContext(string connectionString)
         {
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentException("Connection string cannot be null or empty.");
+            }
             _connectionString = connectionString;
         }
 
@@ -21,8 +23,7 @@ namespace TechStore.DAL
 
         public void Dispose()
         {
-            // У цьому простому прикладі Dispose залишається порожнім, 
-            // оскільки SqlConnection звільняється у блоках using в DAL класах.
+            // Ресурси SqlConnection керуються блоками using в DAL
         }
     }
 }
