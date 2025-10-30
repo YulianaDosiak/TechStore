@@ -1,0 +1,13 @@
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\bin\Debug\net8.0\TechStore.DTO.deps.json
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\bin\Debug\net8.0\TechStore.DTO.dll
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\bin\Debug\net8.0\TechStore.DTO.pdb
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.csproj.AssemblyReference.cache
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.AssemblyInfoInputs.cache
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.AssemblyInfo.cs
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.csproj.CoreCompileInputs.cache
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.sourcelink.json
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.dll
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\refint\TechStore.DTO.dll
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.pdb
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\ref\TechStore.DTO.dll

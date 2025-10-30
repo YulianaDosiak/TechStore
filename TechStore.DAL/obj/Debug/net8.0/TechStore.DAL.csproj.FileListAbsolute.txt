@@ -1,0 +1,16 @@
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\bin\Debug\net8.0\TechStore.DAL.deps.json
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\bin\Debug\net8.0\TechStore.DAL.dll
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\bin\Debug\net8.0\TechStore.DAL.pdb
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\bin\Debug\net8.0\TechStore.DTO.dll
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\bin\Debug\net8.0\TechStore.DTO.pdb
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStore.DAL.csproj.AssemblyReference.cache
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStore.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStore.DAL.AssemblyInfoInputs.cache
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStore.DAL.AssemblyInfo.cs
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStore.DAL.csproj.CoreCompileInputs.cache
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStore.DAL.sourcelink.json
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStor.AB20488F.Up2Date
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStore.DAL.dll
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\refint\TechStore.DAL.dll
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\TechStore.DAL.pdb
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DAL\obj\Debug\net8.0\ref\TechStore.DAL.dll
