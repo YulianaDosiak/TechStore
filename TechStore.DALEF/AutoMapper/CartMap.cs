@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
-using Model = TechStore.DALEF.Models;
+using EF = TechStore.DALEF.Models;
 using DTO = TechStore.DTO;
 
-public class CartMap : Profile
+namespace TechStore.DALEF.AutoMapper
 {
-    public CartMap()
+    public class CartMap : Profile
     {
-        CreateMap<Model.Cart, DTO.Cart>().ReverseMap();
+        public CartMap()
+        {
+            CreateMap<EF.Cart, DTO.Cart>();
+            CreateMap<DTO.Cart, EF.Cart>();
+        }
     }
 }

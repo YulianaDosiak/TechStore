@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
-using Model = TechStore.DALEF.Models;
+using EF = TechStore.DALEF.Models;
 using DTO = TechStore.DTO;
 
-public class OrderMap : Profile
+namespace TechStore.DALEF.AutoMapper
 {
-    public OrderMap()
+    public class OrderMap : Profile
     {
-        CreateMap<Model.Order, DTO.Order>().ReverseMap();
+        public OrderMap()
+        {
+            CreateMap<EF.Order, DTO.Order>();
+            CreateMap<DTO.Order, EF.Order>();
+        }
     }
 }

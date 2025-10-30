@@ -1,48 +1,52 @@
 ﻿using System;
-using TechStore.DAL;
-using TechStore.DAL.Concrete;
 using TechStore.DAL.Interfaces;
+using TechStore.Commands.Interfaces;
 
-namespace TechStore.ConsoleDemo.Commands
+namespace TechStore.Commands
 {
-    public class DeleteByIdCommand : ICommand
+    public class DeleteByIdCommand<T> : ICommand where T : class
     {
-        private readonly TechStoreDbContext _context;
+        private readonly IGenericDAL<T> _dal;
 
-        public DeleteByIdCommand(TechStoreDbContext context)
+        public DeleteByIdCommand(IGenericDAL<T> dal)
         {
-            _context = context;
+            _dal = dal;
         }
+
+        public string Description => $"Delete {typeof(T).Name} by ID";
 
         public void Execute()
         {
-            ICategoryDAL categoryDal = new CategoryDAL(_context);
-
-            Console.Write("Enter category ID to delete: ");
-            if (int.TryParse(Console.ReadLine(), out int id))
+            Console.Write("Enter ID: ");
+            if (!int.TryParse(Console.ReadLine(), out int id))
             {
-                try
-                {
-                    var categoryToDelete = categoryDal.GetById(id);
+                Console.WriteLine("Invalid ID format.");
+                return;
+            }
 
-                    if (categoryToDelete != null)
-                    {
-                        categoryDal.Delete(id);
-                        Console.WriteLine($"\nCategory ID {id} deleted successfully.\n");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"\nCategory with ID {id} not found. Deletion failed.\n");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error deleting category: {ex.Message}");
-                }
+            var item = _dal.GetById(id);
+            if (item == null)
+            {
+                Console.WriteLine($"{typeof(T).Name} with ID {id} not found.");
+                return;
+            }
+
+            Console.Write($"Are you sure you want to delete {typeof(T).Name} with ID {id}? (y/n): ");
+            var confirm = Console.ReadLine();
+            if (confirm?.ToLower() != "y")
+            {
+                Console.WriteLine("Delete cancelled.");
+                return;
+            }
+
+            var success = _dal.Delete(id);
+            if (success)
+            {
+                Console.WriteLine($"{typeof(T).Name} with ID {id} deleted successfully!");
             }
             else
             {
-                Console.WriteLine("Invalid ID format.");
+                Console.WriteLine($"Failed to delete {typeof(T).Name} with ID {id}.");
             }
         }
     }

@@ -5,9 +5,9 @@ namespace TechStore.DALEF.Models;
 
 public partial class Cart
 {
-    public int CartID { get; set; }
+    public int CartId { get; set; }
 
-    public int? UserID { get; set; }
+    public int? UserId { get; set; }
 
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 

@@ -1,14 +1,13 @@
-﻿using TechStore.DTO;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TechStore.DTO;
 
 namespace TechStore.DAL.Interfaces
 {
-    public interface IProductDAL
+    public interface IProductDAL : IGenericDAL<Product>
     {
-        IEnumerable<Product> GetAll();
-        Product GetById(int id);
-        void Insert(Product product);
-        void Update(Product product);
-        void Delete(int id);
     }
 }

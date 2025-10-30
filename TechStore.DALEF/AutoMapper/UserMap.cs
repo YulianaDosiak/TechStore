@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
-using Model = TechStore.DALEF.Models;
+using EF = TechStore.DALEF.Models;
 using DTO = TechStore.DTO;
 
-public class UserMap : Profile
+namespace TechStore.DALEF.AutoMapper
 {
-    public UserMap()
+    public class UserMap : Profile
     {
-        CreateMap<Model.User, DTO.User>().ReverseMap();
+        public UserMap()
+        {
+            CreateMap<EF.User, DTO.User>();
+            CreateMap<DTO.User, EF.User>();
+        }
     }
 }

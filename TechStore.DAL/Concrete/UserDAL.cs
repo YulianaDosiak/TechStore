@@ -1,106 +1,46 @@
-﻿using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TechStore.DAL.Interfaces;
 using TechStore.DTO;
 
 namespace TechStore.DAL.Concrete
 {
-    public class UserDAL : IUserDAL
+    public class UserDAL : GenericDAL<User>, IUserDAL
     {
-        private readonly TechStoreDbContext _context;
+        public UserDAL(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
-        public UserDAL(TechStoreDbContext context)
+        public override User Create(User entity)
         {
-            _context = context;
+
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public override List<User> GetAll()
         {
-            var users = new List<User>();
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Users", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        users.Add(new User
-                        {
-                            UserID = (int)reader["UserID"],
-                            Username = reader["Username"].ToString(),
-                            Email = reader["Email"].ToString(),
-                            Password = reader["Password"].ToString()
-                        });
-                    }
-                }
-            }
-            return users;
+
+            throw new NotImplementedException();
         }
 
-        public User GetById(int id)
+        public override User GetById(int id)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Users WHERE UserID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        return new User
-                        {
-                            UserID = (int)reader["UserID"],
-                            Username = reader["Username"].ToString(),
-                            Email = reader["Email"].ToString(),
-                            Password = reader["Password"].ToString()
-                        };
-                    }
-                }
-            }
-            return null;
+
+            throw new NotImplementedException();
         }
 
-
-        public void Insert(User user)
+        public override User Update(User entity)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand(
-                    "INSERT INTO Users (Username, Email, Password) VALUES (@u, @e, @p)", conn);
-                cmd.Parameters.AddWithValue("@u", user.Username);
-                cmd.Parameters.AddWithValue("@e", user.Email);
-                cmd.Parameters.AddWithValue("@p", user.Password);
-                cmd.ExecuteNonQuery();
-            }
+
+            throw new NotImplementedException();
         }
 
-        public void Update(User user)
+        public override bool Delete(int id)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand(
-                    "UPDATE Users SET Username=@u, Email=@e, Password=@p WHERE UserID=@id", conn);
-                cmd.Parameters.AddWithValue("@u", user.Username);
-                cmd.Parameters.AddWithValue("@e", user.Email);
-                cmd.Parameters.AddWithValue("@p", user.Password);
-                cmd.Parameters.AddWithValue("@id", user.UserID);
-                cmd.ExecuteNonQuery();
-            }
-        }
 
-        public void Delete(int id)
-        {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("DELETE FROM Users WHERE UserID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-            }
+            throw new NotImplementedException();
         }
     }
 }

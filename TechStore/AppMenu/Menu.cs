@@ -1,37 +1,69 @@
 ﻿using System;
-using TechStore.ConsoleDemo.Commands;
-using TechStore.DAL;
+using TechStore.Commands;
+using TechStore.Commands.Interfaces;
+using TechStore.DAL.Interfaces;
 
-namespace TechStore.ConsoleDemo.AppMenu
+namespace TechStore.AppMenu
 {
-    public class Menu
+    public class Menu<T> where T : class, new()
     {
-        private readonly TechStoreDbContext _context;
+        private readonly GetAllCommand<T> _getAllCommand;
+        private readonly InsertCommand<T> _insertCommand;
+        private readonly GetByIdCommand<T> _getByIdCommand;
+        private readonly DeleteByIdCommand<T> _deleteByIdCommand;
+        private readonly UpdateCommand<T> _updateCommand;
 
-        public Menu(TechStoreDbContext context)
+        public Menu(IGenericDAL<T> dal)
         {
-            _context = context;
+            _getAllCommand = new GetAllCommand<T>(dal);
+            _insertCommand = new InsertCommand<T>(dal);
+            _getByIdCommand = new GetByIdCommand<T>(dal);
+            _deleteByIdCommand = new DeleteByIdCommand<T>(dal);
+            _updateCommand = new UpdateCommand<T>(dal);
         }
 
-        public void Start()
+        public void Show()
         {
-            bool running = true;
-
-            while (running)
+            char choice = ' ';
+            while (choice != 'q' && choice != 'Q')
             {
-                new AppMenu().ShowMainMenu();
-                Console.Write("Choose an option: ");
-                string choice = Console.ReadLine();
+                Console.WriteLine($"\n{typeof(T).Name} Menu:");
+                Console.WriteLine("1 - " + _getAllCommand.Description);
+                Console.WriteLine("2 - " + _getByIdCommand.Description);
+                Console.WriteLine("3 - " + _insertCommand.Description);
+                Console.WriteLine("4 - " + _deleteByIdCommand.Description);
+                Console.WriteLine("5 - " + _updateCommand.Description);
+                Console.WriteLine("q - Quit");
+
+                string input = Console.ReadLine();
+                if (string.IsNullOrEmpty(input)) continue;
+
+                choice = input[0];
 
                 switch (choice)
                 {
-                    case "1": new GetAllCommand(_context).Execute(); break;
-                    case "2": new GetByIdCommand(_context).Execute(); break;
-                    case "3": new InsertCommand(_context).Execute(); break;
-                    case "4": new UpdateCommand(_context).Execute(); break;
-                    case "5": new DeleteByIdCommand(_context).Execute(); break;
-                    case "0": running = false; break;
-                    default: Console.WriteLine("Invalid choice. Try again."); break;
+                    case '1':
+                        _getAllCommand.Execute();
+                        break;
+                    case '2':
+                        _getByIdCommand.Execute();
+                        break;
+                    case '3':
+                        _insertCommand.Execute();
+                        break;
+                    case '4':
+                        _deleteByIdCommand.Execute();
+                        break;
+                    case '5':
+                        _updateCommand.Execute();
+                        break;
+                    case 'q':
+                    case 'Q':
+                        Console.WriteLine("Returning to main menu...");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Try again.");
+                        break;
                 }
             }
         }

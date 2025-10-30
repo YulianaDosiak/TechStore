@@ -1,95 +1,41 @@
-﻿using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TechStore.DAL.Interfaces;
 using TechStore.DTO;
 
 namespace TechStore.DAL.Concrete
 {
-    public class CartDAL : ICartDAL
+    public class CartDAL : GenericDAL<Cart>, ICartDAL
     {
-        private readonly TechStoreDbContext _context;
+        public CartDAL(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
-        public CartDAL(TechStoreDbContext context)
+        public override Cart Create(Cart entity)
         {
-            _context = context;
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<Cart> GetAll()
+        public override List<Cart> GetAll()
         {
-            var list = new List<Cart>();
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Cart", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        list.Add(new Cart
-                        {
-                            CartID = (int)reader["CartID"],
-                            UserID = (int)reader["UserID"] 
-                        });
-                    }
-                }
-            }
-            return list;
+            throw new NotImplementedException();
         }
 
-        public Cart GetById(int id)
+        public override Cart GetById(int id)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Cart WHERE CartID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        return new Cart
-                        {
-                            CartID = (int)reader["CartID"], 
-                            UserID = (int)reader["UserID"] 
-                        };
-                    }
-                }
-            }
-            return null;
+            throw new NotImplementedException();
         }
 
-        public void Insert(Cart cart)
+        public override Cart Update(Cart entity)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("INSERT INTO Cart (UserID) VALUES (@u)", conn);
-                cmd.Parameters.AddWithValue("@u", cart.UserID);
-                cmd.ExecuteNonQuery();
-            }
+            throw new NotImplementedException();
         }
 
-        public void Update(Cart cart)
+        public override bool Delete(int id)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("UPDATE Cart SET UserID=@u WHERE CartID=@id", conn);
-                cmd.Parameters.AddWithValue("@u", cart.UserID);
-                cmd.Parameters.AddWithValue("@id", cart.CartID);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public void Delete(int id)
-        {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("DELETE FROM Cart WHERE CartID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-            }
+            throw new NotImplementedException();
         }
     }
 }

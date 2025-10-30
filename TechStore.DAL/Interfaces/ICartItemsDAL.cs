@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TechStore.DTO;
 
-namespace TechStore.DAL.Tests
+namespace TechStore.DAL.Interfaces
 {
-    internal class Class1
+    public interface ICartItemsDAL : IGenericDAL<CartItems>
     {
     }
 }

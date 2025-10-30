@@ -1,107 +1,42 @@
-﻿using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TechStore.DAL.Interfaces;
 using TechStore.DTO;
 
 namespace TechStore.DAL.Concrete
 {
-    public class CategoryDAL : ICategoryDAL
+    public class CategoryDAL : GenericDAL<Category>, ICategoryDAL
     {
-        private readonly TechStoreDbContext _context;
+        public CategoryDAL(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
-        public CategoryDAL(TechStoreDbContext context)
+        public override Category Create(Category entity)
         {
-            _context = context;
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<Category> GetAll()
+        public override List<Category> GetAll()
         {
-            var list = new List<Category>();
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                using (var cmd = new SqlCommand("SELECT * FROM Categories", conn)) // ВИПРАВЛЕННЯ
-                {
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            list.Add(new Category
-                            {
-                                CategoryID = (int)reader["CategoryID"],
-                                CategoryName = reader["CategoryName"].ToString()
-                            });
-                        }
-                    }
-                }
-            }
-            return list;
+            throw new NotImplementedException();
         }
 
-        public Category GetById(int id)
+        public override Category GetById(int id)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                using (var cmd = new SqlCommand("SELECT * FROM Categories WHERE CategoryID=@id", conn)) // ВИПРАВЛЕННЯ
-                {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new Category
-                            {
-                                CategoryID = (int)reader["CategoryID"],
-                                CategoryName = reader["CategoryName"].ToString()
-                            };
-                        }
-                    }
-                }
-            }
-            return null;
+            throw new NotImplementedException();
         }
 
-        public void Insert(Category c)
+        public override Category Update(Category entity)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                using (var cmd = new SqlCommand( // ВИПРАВЛЕННЯ
-                    "INSERT INTO Categories (CategoryName) VALUES (@n)", conn))
-                {
-                    cmd.Parameters.AddWithValue("@n", c.CategoryName);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            throw new NotImplementedException();
         }
 
-        public void Update(Category c)
+        public override bool Delete(int id)
         {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                using (var cmd = new SqlCommand( // ВИПРАВЛЕННЯ
-                    "UPDATE Categories SET CategoryName=@n WHERE CategoryID=@id", conn))
-                {
-                    cmd.Parameters.AddWithValue("@n", c.CategoryName);
-                    cmd.Parameters.AddWithValue("@id", c.CategoryID);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
 
-        public void Delete(int id)
-        {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                using (var cmd = new SqlCommand("DELETE FROM Categories WHERE CategoryID=@id", conn)) // ВИПРАВЛЕННЯ
-                {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            throw new NotImplementedException();
         }
     }
 }

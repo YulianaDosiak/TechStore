@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
-using Model = TechStore.DALEF.Models;
+using EF = TechStore.DALEF.Models;
 using DTO = TechStore.DTO;
 
-public class CategoryMap : Profile
+namespace TechStore.DALEF.AutoMapper
 {
-    public CategoryMap()
+    public class CategoryMap : Profile
     {
-        CreateMap<Model.Category, DTO.Category>().ReverseMap();
+        public CategoryMap()
+        {
+            CreateMap<EF.Category, DTO.Category>();
+            CreateMap<DTO.Category, EF.Category>();
+        }
     }
 }

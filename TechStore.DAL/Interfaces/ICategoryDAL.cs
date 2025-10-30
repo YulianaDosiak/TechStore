@@ -1,14 +1,13 @@
-﻿using TechStore.DTO;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TechStore.DTO;
 
 namespace TechStore.DAL.Interfaces
 {
-    public interface ICategoryDAL
+    public interface ICategoryDAL : IGenericDAL<Category>
     {
-        IEnumerable<Category> GetAll();
-        Category GetById(int id);
-        void Insert(Category category);
-        void Update(Category category);
-        void Delete(int id);
     }
 }

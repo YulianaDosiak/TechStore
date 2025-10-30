@@ -1,107 +1,40 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
-using TechStore.DTO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TechStore.DAL.Interfaces;
+using TechStore.DTO;
 
 namespace TechStore.DAL.Concrete
 {
-    public class OrderDAL : IOrderDAL
+    public class OrderDAL : GenericDAL<Order>, IOrderDAL
     {
-        private readonly TechStoreDbContext _context;
+        public OrderDAL(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
-        public OrderDAL(TechStoreDbContext context)
+        public override Order Create(Order entity)
         {
-            _context = context;
+            throw new NotImplementedException();
+        }
+        public override List<Order> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+        public override Order GetById(int id)
+        {
+            throw new NotImplementedException();
         }
 
-        public IEnumerable<Order> GetAll()
+        public override Order Update(Order entity)
         {
-            var list = new List<Order>();
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Orders", conn);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        list.Add(new Order
-                        {
-                            OrderID = (int)reader["OrderID"], 
-                            UserID = (int)reader["UserID"],   
-                            OrderDate = (DateTime)reader["OrderDate"],
-                            TotalAmount = (decimal)reader["TotalAmount"]
-                        });
-                    }
-                }
-            }
-            return list;
+            throw new NotImplementedException();
         }
 
-        public Order GetById(int id)
+        public override bool Delete(int id)
         {
-            Order order = null;
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("SELECT * FROM Orders WHERE OrderID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        order = new Order
-                        {
-                            OrderID = (int)reader["OrderID"],  
-                            UserID = (int)reader["UserID"],  
-                            OrderDate = (DateTime)reader["OrderDate"],
-                            TotalAmount = (decimal)reader["TotalAmount"]
-                        };
-                    }
-                }
-            }
-            return order;
+            throw new NotImplementedException();
         }
 
-        public void Insert(Order o)
-        {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand(
-                    "INSERT INTO Orders (UserID, OrderDate, TotalAmount) VALUES (@u, @d, @t)", conn);
-                cmd.Parameters.AddWithValue("@u", o.UserID);
-                cmd.Parameters.AddWithValue("@d", o.OrderDate);
-                cmd.Parameters.AddWithValue("@t", o.TotalAmount);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public void Update(Order o)
-        {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand(
-                    "UPDATE Orders SET UserID=@u, OrderDate=@d, TotalAmount=@t WHERE OrderID=@id", conn);
-                cmd.Parameters.AddWithValue("@u", o.UserID); 
-                cmd.Parameters.AddWithValue("@d", o.OrderDate);
-                cmd.Parameters.AddWithValue("@t", o.TotalAmount);
-                cmd.Parameters.AddWithValue("@id", o.OrderID);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public void Delete(int id)
-        {
-            using (var conn = _context.GetConnection())
-            {
-                conn.Open();
-                var cmd = new SqlCommand("DELETE FROM Orders WHERE OrderID=@id", conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-            }
-        }
     }
 }

@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
-using Model = TechStore.DALEF.Models;
+using EF = TechStore.DALEF.Models;
 using DTO = TechStore.DTO;
 
-public class ProductMap : Profile
+namespace TechStore.DALEF.AutoMapper
 {
-    public ProductMap()
+    public class ProductMap : Profile
     {
-        CreateMap<Model.Product, DTO.Product>().ReverseMap();
+        public ProductMap()
+        {
+            CreateMap<EF.Product, DTO.Product>();
+            CreateMap<DTO.Product, EF.Product>();
+        }
     }
 }

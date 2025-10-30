@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace TechStore.DALEF.Models;
 
 public partial class User
 {
-    public int UserID { get; set; }
+    public int UserId { get; set; }
 
     public string Username { get; set; } = null!;
 

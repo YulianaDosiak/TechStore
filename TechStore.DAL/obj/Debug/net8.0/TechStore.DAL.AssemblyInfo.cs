@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TechStore.DAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+db403b5984f91ef9d8be10fd1c66f90f2daacb36")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+115baa113cac19e9d11f87210dc010f87af2d2d5")]
 [assembly: System.Reflection.AssemblyProductAttribute("TechStore.DAL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TechStore.DAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

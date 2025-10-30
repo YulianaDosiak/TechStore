@@ -1,45 +1,33 @@
 ﻿using System;
-using System.Linq; 
-using TechStore.DAL;
-using TechStore.DAL.Concrete;
+using TechStore.Commands.Interfaces;
 using TechStore.DAL.Interfaces;
 
-namespace TechStore.ConsoleDemo.Commands
+namespace TechStore.Commands
 {
-    public class GetAllCommand : ICommand
+    public class GetAllCommand<T> : ICommand where T : class
     {
-        private readonly TechStoreDbContext _context;
+        private readonly IGenericDAL<T> _dal;
 
-        public GetAllCommand(TechStoreDbContext context)
+        public GetAllCommand(IGenericDAL<T> dal)
         {
-            _context = context;
+            _dal = dal;
         }
+
+        public string Description => $"Get all {typeof(T).Name}";
 
         public void Execute()
         {
-            ICategoryDAL categoryDal = new CategoryDAL(_context);
-
-            try
+            var items = _dal.GetAll();
+            if (items.Count > 0)
             {
-                var allCategories = categoryDal.GetAll();
-
-                Console.WriteLine("\n===== All Categories (Demo) =====");
-                if (!allCategories.Any())
+                foreach (var item in items)
                 {
-                    Console.WriteLine("No categories found.");
+                    Console.WriteLine(item);
                 }
-                else
-                {
-                    foreach (var cat in allCategories)
-                    {
-                        Console.WriteLine($"Id: {cat.CategoryID}, Name: {cat.CategoryName}");
-                    }
-                }
-                Console.WriteLine("=================================\n");
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine($"Error retrieving categories: {ex.Message}");
+                Console.WriteLine($"No {typeof(T).Name} found.");
             }
         }
     }

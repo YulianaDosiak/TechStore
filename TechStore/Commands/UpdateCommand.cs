@@ -1,53 +1,87 @@
 ﻿using System;
-using TechStore.DAL;
-using TechStore.DAL.Concrete;
+using System.Reflection;
+using TechStore.Commands.Interfaces;
 using TechStore.DAL.Interfaces;
-using TechStore.DTO;
 
-namespace TechStore.ConsoleDemo.Commands
+namespace TechStore.Commands
 {
-    public class UpdateCommand : ICommand
+    public class UpdateCommand<T> : ICommand where T : class, new()
     {
-        private readonly TechStoreDbContext _context;
+        private readonly IGenericDAL<T> _dal;
 
-        public UpdateCommand(TechStoreDbContext context)
+        public UpdateCommand(IGenericDAL<T> dal)
         {
-            _context = context;
+            _dal = dal;
         }
+
+        public string Description => $"Update {typeof(T).Name}";
 
         public void Execute()
         {
-            ICategoryDAL categoryDal = new CategoryDAL(_context);
-
-            Console.Write("Enter category ID to update: ");
-            if (int.TryParse(Console.ReadLine(), out int id))
-            {
-                var category = categoryDal.GetById(id);
-
-                if (category != null)
-                {
-                    Console.Write($"Current name: {category.CategoryName}. Enter new category name: ");
-                    string newName = Console.ReadLine();
-
-                    if (!string.IsNullOrWhiteSpace(newName))
-                    {
-                        category.CategoryName = newName;
-                        categoryDal.Update(category);
-                        Console.WriteLine("\nCategory updated successfully.\n");
-                    }
-                    else
-                    {
-                        Console.WriteLine("New name cannot be empty.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"\nCategory with ID {id} not found.\n");
-                }
-            }
-            else
+            Console.Write($"Enter ID of the {typeof(T).Name} to update: ");
+            if (!int.TryParse(Console.ReadLine(), out int id))
             {
                 Console.WriteLine("Invalid ID format.");
+                return;
+            }
+
+            var item = _dal.GetById(id);
+            if (item == null)
+            {
+                Console.WriteLine($"{typeof(T).Name} with ID {id} not found.");
+                return;
+            }
+
+            foreach (var prop in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (!prop.CanWrite) continue;
+
+
+                if (prop.Name.EndsWith("ID", StringComparison.OrdinalIgnoreCase) ||
+                    prop.PropertyType == typeof(DateTime) ||
+                    prop.PropertyType == typeof(DateTime?))
+                    continue;
+
+                while (true)
+                {
+                    var currentValue = prop.GetValue(item);
+                    Console.Write($"Enter new value for {prop.Name} (current: {currentValue}): ");
+                    var input = Console.ReadLine();
+
+                    if (string.IsNullOrWhiteSpace(input)) break;
+
+                    try
+                    {
+                        var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+
+                        object convertedValue = targetType switch
+                        {
+                            Type t when t == typeof(int) => int.Parse(input),
+                            Type t when t == typeof(decimal) => decimal.Parse(input, System.Globalization.CultureInfo.InvariantCulture),
+                            Type t when t == typeof(double) => double.Parse(input, System.Globalization.CultureInfo.InvariantCulture),
+                            Type t when t == typeof(float) => float.Parse(input, System.Globalization.CultureInfo.InvariantCulture),
+                            Type t when t == typeof(bool) => input.Trim().ToLower() == "true" || input.Trim() == "1",
+                            _ => Convert.ChangeType(input, targetType)
+                        };
+
+                        prop.SetValue(item, convertedValue);
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine($"Invalid value for {prop.Name}. Try again.");
+                    }
+                }
+            }
+
+            try
+            {
+                _dal.Update(item);
+                Console.WriteLine($"{typeof(T).Name} with ID {id} updated successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating {typeof(T).Name}: {ex.Message}");
             }
         }
     }

@@ -1,55 +1,39 @@
-﻿using System;
-using Microsoft.Data.SqlClient;
-using TechStore.ConsoleDemo.AppMenu;
-using TechStore.DAL;
-using TechStore.DAL.Concrete;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Abstractions;
+using System;
+using TechStore.AppMenu;
+using TechStore.DALEF.AutoMapper;
 
-namespace TechStore.ConsoleDemo
+namespace TechStore
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
-            const string connectionString = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=TechStore;Integrated Security=True;TrustServerCertificate=True;";
 
-            try
-            {
-                Console.WriteLine("Attempting to connect to the database...");
-                using (var context = new TechStoreDbContext(connectionString))
-                {
-                    var categoryDal = new CategoryDAL(context);
+            var configExpression = new MapperConfigurationExpression();
 
-                    Console.WriteLine("Connection established successfully. Starting menu.");
-                    var menu = new Menu(context);
-                    menu.Start();
-                }
-            }
-            catch (SqlException ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n=======================================================");
-                Console.WriteLine("SQL RUNTIME EXCEPTION:");
-                Console.WriteLine($"SQL Error Code: {ex.Number}");
-                Console.WriteLine($"Message: {ex.Message}");
-                Console.WriteLine("\nVerification required:");
-                Console.WriteLine("1. Ensure the database 'TechStore' exists.");
-                Console.WriteLine("2. If using a named SQL instance, change 'localhost' (e.g., to 'localhost\\SQLEXPRESS').");
-                Console.WriteLine("Press any key to exit.");
-                Console.WriteLine("=======================================================");
-                Console.ResetColor();
-                Console.ReadKey();
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n=======================================================");
-                Console.WriteLine("CRITICAL EXCEPTION:");
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("Press any key to exit.");
-                Console.WriteLine("=======================================================");
-                Console.ResetColor();
-                Console.ReadKey();
-            }
+            configExpression.AddProfile<CategoryMap>();
+            configExpression.AddProfile<ProductMap>();
+            configExpression.AddProfile<UserMap>();
+            configExpression.AddProfile<OrderMap>();
+            configExpression.AddProfile<OrderItemMap>();
+            configExpression.AddProfile<CartMap>();
+            configExpression.AddProfile<CartItemsMap>();
+
+            var loggerFactory = NullLoggerFactory.Instance;
+            var mapperConfig = new MapperConfiguration(configExpression, loggerFactory);
+            IMapper mapper = mapperConfig.CreateMapper();
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            string connectionString = config.GetConnectionString("DefaultConnection");
+
+            new AppMenuService(connectionString, mapper).Show();
         }
     }
 }
