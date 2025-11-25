@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TechStore.DALEF")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+115baa113cac19e9d11f87210dc010f87af2d2d5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e9abe4f9a7f8c0f902ee9a0c06d093082017f6dd")]
 [assembly: System.Reflection.AssemblyProductAttribute("TechStore.DALEF")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TechStore.DALEF")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

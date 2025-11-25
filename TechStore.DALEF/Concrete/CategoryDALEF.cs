@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechStore.DAL.Concrete;
+using TechStore.DAL.Interfaces;
 using TechStore.DALEF.Concrete.ctx;
 using CategoryDTO = TechStore.DTO.Category;
 using CategoryModel = TechStore.DALEF.Models.Category;
 
 namespace TechStore.DALEF.Concrete
 {
-    public class CategoryDALEF : GenericDAL<CategoryDTO>
+    public class CategoryDALEF : GenericDAL<CategoryDTO>, ICategoryDAL
     {
         public CategoryDALEF(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
@@ -25,9 +25,8 @@ namespace TechStore.DALEF.Concrete
                 entity.CategoryID = model.CategoryId;
                 return entity;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error creating Category: {ex.Message}");
                 return null;
             }
         }
@@ -43,9 +42,8 @@ namespace TechStore.DALEF.Concrete
                 ctx.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error deleting Category: {ex.Message}");
                 return false;
             }
         }
@@ -55,12 +53,11 @@ namespace TechStore.DALEF.Concrete
             using var ctx = new TechStoreDbContext(_connStr);
             try
             {
-                var models = ctx.Categories.OrderBy(c => c.CategoryId).ToList();
+                var models = ctx.Categories.OrderBy(e => e.CategoryId).ToList();
                 return _mapper.Map<List<CategoryDTO>>(models);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error retrieving Categories: {ex.Message}");
                 return new List<CategoryDTO>();
             }
         }
@@ -73,9 +70,8 @@ namespace TechStore.DALEF.Concrete
                 var model = ctx.Categories.Find(id);
                 return _mapper.Map<CategoryDTO>(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error retrieving Category by Id: {ex.Message}");
                 return null;
             }
         }
@@ -91,9 +87,8 @@ namespace TechStore.DALEF.Concrete
                 ctx.SaveChanges();
                 return _mapper.Map<CategoryDTO>(existing);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error updating Category: {ex.Message}");
                 return null;
             }
         }

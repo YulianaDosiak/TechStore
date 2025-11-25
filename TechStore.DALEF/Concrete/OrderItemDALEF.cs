@@ -1,17 +1,16 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechStore.DAL.Concrete;
+using TechStore.DAL.Interfaces;
 using TechStore.DALEF.Concrete.ctx;
 using OrderItemDTO = TechStore.DTO.OrderItem;
 using OrderItemModel = TechStore.DALEF.Models.OrderItem;
 
-
 namespace TechStore.DALEF.Concrete
 {
-    public class OrderItemDALEF : GenericDAL<OrderItemDTO>
+    public class OrderItemDALEF : GenericDAL<OrderItemDTO>, IOrderItemDAL
     {
         public OrderItemDALEF(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
@@ -26,9 +25,8 @@ namespace TechStore.DALEF.Concrete
                 entity.OrderItemID = model.OrderItemId;
                 return entity;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error creating OrderItem: {ex.Message}");
                 return null;
             }
         }
@@ -44,9 +42,8 @@ namespace TechStore.DALEF.Concrete
                 ctx.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error deleting OrderItem: {ex.Message}");
                 return false;
             }
         }
@@ -56,16 +53,11 @@ namespace TechStore.DALEF.Concrete
             using var ctx = new TechStoreDbContext(_connStr);
             try
             {
-                var models = ctx.OrderItems
-                    .Include(oi => oi.Product)
-                    .Include(oi => oi.Order)
-                    .OrderBy(oi => oi.OrderItemId)
-                    .ToList();
+                var models = ctx.OrderItems.OrderBy(e => e.OrderItemId).ToList();
                 return _mapper.Map<List<OrderItemDTO>>(models);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error retrieving OrderItems: {ex.Message}");
                 return new List<OrderItemDTO>();
             }
         }
@@ -75,15 +67,11 @@ namespace TechStore.DALEF.Concrete
             using var ctx = new TechStoreDbContext(_connStr);
             try
             {
-                var model = ctx.OrderItems
-                    .Include(oi => oi.Product)
-                    .Include(oi => oi.Order)
-                    .FirstOrDefault(oi => oi.OrderItemId == id);
+                var model = ctx.OrderItems.Find(id);
                 return _mapper.Map<OrderItemDTO>(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error retrieving OrderItem by Id: {ex.Message}");
                 return null;
             }
         }
@@ -99,9 +87,8 @@ namespace TechStore.DALEF.Concrete
                 ctx.SaveChanges();
                 return _mapper.Map<OrderItemDTO>(existing);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error updating OrderItem: {ex.Message}");
                 return null;
             }
         }

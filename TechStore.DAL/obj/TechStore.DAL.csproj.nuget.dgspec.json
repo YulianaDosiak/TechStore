@@ -56,7 +56,7 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[15.1.0, )"
+              "version": "[12.0.1, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",

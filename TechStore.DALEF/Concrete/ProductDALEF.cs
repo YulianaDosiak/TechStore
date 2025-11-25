@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechStore.DAL.Concrete;
+using TechStore.DAL.Interfaces;
 using TechStore.DALEF.Concrete.ctx;
 using ProductDTO = TechStore.DTO.Product;
 using ProductModel = TechStore.DALEF.Models.Product;
 
 namespace TechStore.DALEF.Concrete
 {
-    public class ProductDALEF : GenericDAL<ProductDTO>
+    public class ProductDALEF : GenericDAL<ProductDTO>, IProductDAL
     {
         public ProductDALEF(string connStr, IMapper mapper) : base(connStr, mapper) { }
 

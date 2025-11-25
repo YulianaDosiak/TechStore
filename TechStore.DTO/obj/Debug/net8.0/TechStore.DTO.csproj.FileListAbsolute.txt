@@ -1,4 +1,5 @@
 C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\bin\Debug\net8.0\TechStore.DTO.deps.json
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\bin\Debug\net8.0\TechStore.DTO.runtimeconfig.json
 C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\bin\Debug\net8.0\TechStore.DTO.dll
 C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\bin\Debug\net8.0\TechStore.DTO.pdb
 C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.csproj.AssemblyReference.cache
@@ -10,6 +11,5 @@ C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechS
 C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.dll
 C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\refint\TechStore.DTO.dll
 C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.pdb
-C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\ref\TechStore.DTO.dll
-C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\bin\Debug\net8.0\TechStore.DTO.runtimeconfig.json
 C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\TechStore.DTO.genruntimeconfig.cache
+C:\Users\пк\Desktop\5term\sql.m\TechStore\TechStore.DTO\obj\Debug\net8.0\ref\TechStore.DTO.dll

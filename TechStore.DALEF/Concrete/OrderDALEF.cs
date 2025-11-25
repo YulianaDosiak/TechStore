@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechStore.DAL.Concrete;
+using TechStore.DAL.Interfaces;
 using TechStore.DALEF.Concrete.ctx;
 using OrderDTO = TechStore.DTO.Order;
 using OrderModel = TechStore.DALEF.Models.Order;
 
 namespace TechStore.DALEF.Concrete
 {
-    public class OrderDALEF : GenericDAL<OrderDTO>
+    public class OrderDALEF : GenericDAL<OrderDTO>, IOrderDAL
     {
         public OrderDALEF(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
@@ -27,7 +27,6 @@ namespace TechStore.DALEF.Concrete
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error creating Order: {ex.Message}");
                 return null;
             }
         }
@@ -43,9 +42,8 @@ namespace TechStore.DALEF.Concrete
                 ctx.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error deleting Order: {ex.Message}");
                 return false;
             }
         }
@@ -55,16 +53,11 @@ namespace TechStore.DALEF.Concrete
             using var ctx = new TechStoreDbContext(_connStr);
             try
             {
-                var models = ctx.Orders
-                    .Include(o => o.User)
-                    .Include(o => o.OrderItems)
-                    .OrderBy(o => o.OrderId)
-                    .ToList();
+                var models = ctx.Orders.OrderBy(e => e.OrderId).ToList();
                 return _mapper.Map<List<OrderDTO>>(models);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error retrieving Orders: {ex.Message}");
                 return new List<OrderDTO>();
             }
         }
@@ -74,15 +67,11 @@ namespace TechStore.DALEF.Concrete
             using var ctx = new TechStoreDbContext(_connStr);
             try
             {
-                var model = ctx.Orders
-                    .Include(o => o.User)
-                    .Include(o => o.OrderItems)
-                    .FirstOrDefault(o => o.OrderId == id);
+                var model = ctx.Orders.Find(id);
                 return _mapper.Map<OrderDTO>(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error retrieving Order by Id: {ex.Message}");
                 return null;
             }
         }
@@ -98,9 +87,8 @@ namespace TechStore.DALEF.Concrete
                 ctx.SaveChanges();
                 return _mapper.Map<OrderDTO>(existing);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error updating Order: {ex.Message}");
                 return null;
             }
         }

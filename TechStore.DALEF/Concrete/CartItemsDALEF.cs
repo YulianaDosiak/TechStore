@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechStore.DAL.Concrete;
+using TechStore.DAL.Interfaces;
 using TechStore.DALEF.Concrete.ctx;
 using CartItemsDTO = TechStore.DTO.CartItems;
-using CartItemsModel = TechStore.DALEF.Models.CartItem;
+using CartItemModel = TechStore.DALEF.Models.CartItem;
 
 namespace TechStore.DALEF.Concrete
 {
-    public class CartItemsDALEF : GenericDAL<CartItemsDTO>
+    public class CartItemsDALEF : GenericDAL<CartItemsDTO>, ICartItemsDAL
     {
         public CartItemsDALEF(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
@@ -19,15 +19,14 @@ namespace TechStore.DALEF.Concrete
             using var ctx = new TechStoreDbContext(_connStr);
             try
             {
-                var model = _mapper.Map<CartItemsModel>(entity);
+                var model = _mapper.Map<CartItemModel>(entity);
                 ctx.CartItems.Add(model);
                 ctx.SaveChanges();
                 entity.CartItemID = model.CartItemId;
                 return entity;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error creating CartItem: {ex.Message}");
                 return null;
             }
         }
@@ -43,9 +42,8 @@ namespace TechStore.DALEF.Concrete
                 ctx.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error deleting CartItem: {ex.Message}");
                 return false;
             }
         }
@@ -55,16 +53,11 @@ namespace TechStore.DALEF.Concrete
             using var ctx = new TechStoreDbContext(_connStr);
             try
             {
-                var models = ctx.CartItems
-                    .Include(ci => ci.Cart)
-                    .Include(ci => ci.Product)
-                    .OrderBy(ci => ci.CartItemId)
-                    .ToList();
+                var models = ctx.CartItems.OrderBy(e => e.CartItemId).ToList();
                 return _mapper.Map<List<CartItemsDTO>>(models);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error retrieving CartItems: {ex.Message}");
                 return new List<CartItemsDTO>();
             }
         }
@@ -74,15 +67,11 @@ namespace TechStore.DALEF.Concrete
             using var ctx = new TechStoreDbContext(_connStr);
             try
             {
-                var model = ctx.CartItems
-                    .Include(ci => ci.Cart)
-                    .Include(ci => ci.Product)
-                    .FirstOrDefault(ci => ci.CartItemId == id);
+                var model = ctx.CartItems.Find(id);
                 return _mapper.Map<CartItemsDTO>(model);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error retrieving CartItem by Id: {ex.Message}");
                 return null;
             }
         }
@@ -98,9 +87,8 @@ namespace TechStore.DALEF.Concrete
                 ctx.SaveChanges();
                 return _mapper.Map<CartItemsDTO>(existing);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error updating CartItem: {ex.Message}");
                 return null;
             }
         }

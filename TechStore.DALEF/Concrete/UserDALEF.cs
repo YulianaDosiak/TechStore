@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechStore.DAL.Concrete;
+using TechStore.DAL.Interfaces;
 using TechStore.DALEF.Concrete.ctx;
 using UserDTO = TechStore.DTO.User;
 using UserModel = TechStore.DALEF.Models.User;
 
 namespace TechStore.DALEF.Concrete
 {
-    public class UserDALEF : GenericDAL<UserDTO>
+    public class UserDALEF : GenericDAL<UserDTO>, IUserDAL
     {
         public UserDALEF(string connStr, IMapper mapper) : base(connStr, mapper) { }
 
