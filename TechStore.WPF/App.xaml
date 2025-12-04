@@ -3,70 +3,88 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TechStore.WPF">
     <Application.Resources>
-        <SolidColorBrush x:Key="PrimaryPink" Color="#FFB6C1"/>
-        <SolidColorBrush x:Key="DarkPink" Color="#FF69B4"/>
-        <SolidColorBrush x:Key="BackgroundLight" Color="#FFF0F5"/>
-        <SolidColorBrush x:Key="TextDark" Color="#333333"/>
+
+        <LinearGradientBrush x:Key="PinkGradientBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF9A9E" Offset="0.0"/>
+            <GradientStop Color="#FECFEF" Offset="0.99"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="AccentPink" Color="#FF6B8B"/>
+        <SolidColorBrush x:Key="TextGray" Color="#555555"/>
+
+        <SolidColorBrush x:Key="AppBackground" Color="#FFF5F7"/>
 
         <Style TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PrimaryPink}"/>
+            <Setter Property="Background" Value="{StaticResource PinkGradientBrush}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Padding" Value="15,8"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
-
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="10" 
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="20" 
                                 Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3" Color="#FF9A9E"/>
+                            </Border.Effect>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource DarkPink}"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="Gray"/>
-                    <Setter Property="Opacity" Value="0.5"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
-        <Style TargetType="TextBox">
-            <Setter Property="Padding" Value="5"/>
+        <Style TargetType="Control" x:Key="InputStyle">
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryPink}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource TextGray}"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
+                    <ControlTemplate TargetType="Control">
                         <Border Background="White" 
-                                CornerRadius="5" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <ScrollViewer x:Name="PART_ContentHost"/>
+                                CornerRadius="10" 
+                                BorderBrush="#E0E0E0" 
+                                BorderThickness="1.5">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <Style TargetType="TextBox" BasedOn="{StaticResource InputStyle}"/>
+        <Style TargetType="PasswordBox" BasedOn="{StaticResource InputStyle}"/>
+
         <Style x:Key="HeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontSize" Value="28"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="{StaticResource DarkPink}"/>
+            <Setter Property="Foreground" Value="{StaticResource AccentPink}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0,0,0,20"/>
+            <Setter Property="Margin" Value="0,0,0,25"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="2" ShadowDepth="1" Opacity="0.2" Color="Gray"/>
+                </Setter.Value>
+            </Setter>
         </Style>
 
     </Application.Resources>

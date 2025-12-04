@@ -40,6 +40,15 @@ namespace TechStore.WPF.ViewModels
             CurrentViewModel = new LoginViewModel(
                 _serviceProvider.GetRequiredService<IAuthService>(),
                 _userSession,
+                this 
+            );
+        }
+
+        public void NavigateToRegister()
+        {
+            CurrentViewModel = new RegisterViewModel(
+                _serviceProvider.GetRequiredService<IAuthService>(),
+                _userSession,
                 this
             );
         }
@@ -56,8 +65,17 @@ namespace TechStore.WPF.ViewModels
 
         private void Logout()
         {
-            _userSession.Clear();
-            NavigateToLogin();
+            var result = System.Windows.MessageBox.Show(
+                "Are you sure you want to logout?",
+                "Confirm Logout",
+                System.Windows.MessageBoxButton.YesNo,
+                System.Windows.MessageBoxImage.Question);
+
+            if (result == System.Windows.MessageBoxResult.Yes)
+            {
+                _userSession.Clear();
+                NavigateToLogin();
+            }
         }
     }
 }

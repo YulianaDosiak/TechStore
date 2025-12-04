@@ -32,7 +32,9 @@ namespace TechStore.Test.DALEF
             var configExpression = new MapperConfigurationExpression();
             configExpression.AddProfile<OrderMap>();
             configExpression.AddProfile<UserMap>();
-            var mapperConfig = new MapperConfiguration(configExpression, NullLoggerFactory.Instance);
+            var mapperConfig = new MapperConfiguration(configExpression);
+
+            _mapper = mapperConfig.CreateMapper();
             _mapper = mapperConfig.CreateMapper();
 
             _dal = new OrderDALEF(_testConnectionString, _mapper);

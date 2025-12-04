@@ -44,7 +44,9 @@ namespace TechStore.Test.DALEF
             configExpression.AddProfile<ProductMap>();
             configExpression.AddProfile<UserMap>();
             configExpression.AddProfile<CategoryMap>();
-            var mapperConfig = new MapperConfiguration(configExpression, NullLoggerFactory.Instance);
+            var mapperConfig = new MapperConfiguration(configExpression);
+
+            _mapper = mapperConfig.CreateMapper();
             _mapper = mapperConfig.CreateMapper();
 
             _dal = new OrderItemDALEF(_testConnectionString, _mapper);

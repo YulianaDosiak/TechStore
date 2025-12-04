@@ -28,7 +28,9 @@ namespace TechStore.Test.DALEF
 
             var configExpression = new MapperConfigurationExpression();
             configExpression.AddProfile<CategoryMap>();
-            var mapperConfig = new MapperConfiguration(configExpression, NullLoggerFactory.Instance);
+            var mapperConfig = new MapperConfiguration(configExpression);
+
+            _mapper = mapperConfig.CreateMapper();
             _mapper = mapperConfig.CreateMapper();
 
             _dal = new CategoryDALEF(_testConnectionString, _mapper);

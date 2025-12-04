@@ -15,7 +15,6 @@ namespace TechStore.WPF.ViewModels
         private readonly IOrderService _orderService;
         private readonly UserSession _userSession;
 
-        // Використовуємо повну властивість, щоб оновлювати інтерфейс
         private ObservableCollection<CartItems> _cartItems;
         public ObservableCollection<CartItems> CartItems
         {
@@ -50,7 +49,6 @@ namespace TechStore.WPF.ViewModels
         {
             if (_userSession.IsLoggedIn)
             {
-                // 1. Знаходимо кошик користувача
                 var cart = _cartService.GetCartByUserId(_userSession.CurrentUser.UserID);
 
 

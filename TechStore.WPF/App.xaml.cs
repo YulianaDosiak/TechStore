@@ -33,7 +33,6 @@ namespace TechStore.WPF
 
             services.AddAutoMapper(typeof(UserDALEF).Assembly);
 
-            // Реєстрація DAL
             services.AddScoped<IUserDAL>(provider =>
                 new UserDALEF(connectionString, provider.GetRequiredService<IMapper>()));
 
@@ -55,7 +54,7 @@ namespace TechStore.WPF
             services.AddScoped<IOrderItemDAL>(provider =>
                 new OrderItemDALEF(connectionString, provider.GetRequiredService<IMapper>()));
 
-            // Реєстрація BLL
+            // BLL
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
@@ -63,12 +62,14 @@ namespace TechStore.WPF
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
 
-            // Реєстрація WPF
+
+            // WPF
             services.AddSingleton<UserSession>();
             services.AddSingleton<MainViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<HomeViewModel>();
             services.AddTransient<CartViewModel>();
+            services.AddTransient<RegisterViewModel>();
             services.AddTransient<MainWindow>();
         }
     }
