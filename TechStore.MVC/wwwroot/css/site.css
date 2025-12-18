@@ -1,0 +1,76 @@
+body {
+    background-color: #e3f2fd;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Навігаційна панель (меню) */
+.navbar {
+    background-color: #2196f3 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
+}
+
+    .nav-link:hover {
+        color: #bbdefb !important;
+    }
+
+/* Кнопки */
+.btn-primary {
+    background-color: #1976d2;
+    border-color: #1565c0;
+}
+
+    .btn-primary:hover {
+        background-color: #0d47a1;
+        border-color: #0a3d91;
+    }
+
+.btn-success {
+    background-color: #00bcd4;
+    border-color: #00acc1;
+    color: white;
+}
+
+    .btn-success:hover {
+        background-color: #0097a7;
+    }
+
+/* Картки товарів */
+.card {
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    transition: transform 0.2s;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+
+.card-title {
+    color: #1565c0;
+    font-weight: bold;
+}
+
+/*Таблиці*/ 
+.table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #bbdefb;
+    color: #0d47a1;
+}
+
+/* Footer */
+.footer {
+    background-color: #1565c0;
+    color: white;
+}

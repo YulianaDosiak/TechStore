@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TechStore.MVC.Models.CartItemViewModel>
+
+@{
+    ViewData["Title"] = "Мій кошик";
+    decimal totalSum = 0;
+}
+
+<div class="container mt-4">
+    <h2>Ваш кошик</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info mt-3">
+            <p>Ваш кошик порожній.</p>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-primary">Перейти до покупок</a>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm mt-3">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Товар</th>
+                        <th>Ціна</th>
+                        <th>К-сть</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        totalSum += item.Price * item.Quantity;
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Price.ToString("N2")</td>
+                            <td>@item.Quantity</td>
+                            <td class="text-end">
+                                <a asp-action="Remove" asp-route-id="@item.CartItemId" class="btn btn-danger btn-sm">X</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="fw-bold table-light">
+                        <td colspan="2" class="text-end">Разом:</td>
+                        <td colspan="2">@totalSum.ToString("N2") грн</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        @* ОСЬ ЦЯ КНОПКА - ВОНА ТЕПЕР ТОЧНО З'ЯВИТЬСЯ *@
+        <div class="d-flex justify-content-end mt-3">
+            <a asp-controller="Order" asp-action="Checkout" class="btn btn-success btn-lg px-4">Оформити замовлення</a>
+        </div>
+    }
+</div>

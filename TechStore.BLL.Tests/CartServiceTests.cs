@@ -44,7 +44,6 @@ namespace TechStore.BLL.Tests
             _mockCartDal.Setup(x => x.Create(It.IsAny<Cart>())).Returns(new Cart { CartID = 99, UserID = userId });
 
             var result = _cartService.GetCartByUserId(userId);
-
             _mockCartDal.Verify(x => x.Create(It.Is<Cart>(c => c.UserID == userId)), Times.Once);
             Assert.That(result.CartID, Is.EqualTo(99));
         }

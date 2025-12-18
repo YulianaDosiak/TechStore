@@ -1,0 +1,32 @@
+﻿@model IEnumerable<TechStore.DTO.Category>
+@{
+    ViewData["Title"] = "Управління категоріями";
+}
+
+<h2>CRUD Категорій</h2>
+<p><a asp-action="Create" class="btn btn-primary">Створити нову</a></p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CategoryID</td>
+                <td>@item.CategoryName</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryID" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.CategoryID"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Ви впевнені, що хочете видалити?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

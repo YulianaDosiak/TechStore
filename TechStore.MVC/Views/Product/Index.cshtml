@@ -1,0 +1,13 @@
+﻿@model IEnumerable<TechStore.DTO.Category>
+<h2>Категорії</h2>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card p-3 text-center">
+                <h4>@item.CategoryName</h4>
+                <a asp-action="List" asp-route-categoryId="@item.CategoryID" class="btn btn-outline-primary">Товари</a>
+            </div>
+        </div>
+    }
+</div>
