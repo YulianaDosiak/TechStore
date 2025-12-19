@@ -103,7 +103,7 @@ namespace TechStore.WPF.ViewModels
             // 1. Filter by Search Text
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
-                query = query.Where(p => p.ProductName.ToLower().Contains(SearchText.ToLower()));
+                query = query.Where(p => p.Productname.ToLower().Contains(SearchText.ToLower()));
             }
 
             // 2. Filter by Category
@@ -115,7 +115,7 @@ namespace TechStore.WPF.ViewModels
             switch (SelectedSort)
             {
                 case "Name (A-Z)":
-                    query = query.OrderBy(p => p.ProductName);
+                    query = query.OrderBy(p => p.Productname);
                     break;
                 case "Price (Low to High)":
                     query = query.OrderBy(p => p.Price);
@@ -141,7 +141,7 @@ namespace TechStore.WPF.ViewModels
             if (SelectedProduct != null && _userSession.IsLoggedIn)
             {
                 _cartService.AddItemToCart(_userSession.CurrentUser.UserID, SelectedProduct.ProductID, 1);
-                MessageBox.Show($"{SelectedProduct.ProductName} added to cart!");
+                MessageBox.Show($"{SelectedProduct.Productname} added to cart!");
             }
             else
             {

@@ -66,7 +66,7 @@ namespace TechStore.Test.DALEF
         {
             var prod = new Product
             {
-                ProductName = "TestProduct_Insert",
+                Productname = "TestProduct_Insert",
                 CategoryID = _testCategoryId,
                 Price = 100,
                 Quantity = 10
@@ -74,7 +74,7 @@ namespace TechStore.Test.DALEF
 
             var created = _dal.Create(prod);
             Assert.That(created, Is.Not.Null);
-            Assert.That(created.ProductName, Is.EqualTo("TestProduct_Insert"));
+            Assert.That(created.Productname, Is.EqualTo("TestProduct_Insert"));
             _dal.Delete(created.ProductID);
         }
 
@@ -83,7 +83,7 @@ namespace TechStore.Test.DALEF
         {
             var prod = new Product
             {
-                ProductName = "TestProduct_Update",
+                Productname = "TestProduct_Update",
                 CategoryID = _testCategoryId,
                 Price = 150,
                 Quantity = 5
@@ -104,7 +104,7 @@ namespace TechStore.Test.DALEF
         {
             var prod = new Product
             {
-                ProductName = "TestProduct_Delete",
+                Productname = "TestProduct_Delete",
                 CategoryID = _testCategoryId,
                 Price = 200,
                 Quantity = 8

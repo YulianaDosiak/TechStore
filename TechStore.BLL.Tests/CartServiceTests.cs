@@ -53,7 +53,7 @@ namespace TechStore.BLL.Tests
         {
             var userId = 1;
             var productId = 10;
-            var product = new Product { ProductID = productId, ProductName = "Test" };
+            var product = new Product { ProductID = productId, Productname = "Test" };
             var cart = new Cart { CartID = 1, UserID = userId };
 
             _mockCartDal.Setup(x => x.GetAll()).Returns(new List<Cart> { cart });

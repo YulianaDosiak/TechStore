@@ -6,8 +6,9 @@ namespace TechStore.MVC.Models
     {
         public int CategoryID { get; set; }
 
-        [Required(ErrorMessage = "Назва категорії є обов'язковою")]
-        [StringLength(50, ErrorMessage = "Довжина назви не може перевищувати 50 символів")]
+        [Display(Name = "Назва категорії")]
+        [Required(ErrorMessage = "Будь ласка, введіть назву категорії")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Назва повинна містити від 3 до 50 символів")]
         public string CategoryName { get; set; }
     }
 }

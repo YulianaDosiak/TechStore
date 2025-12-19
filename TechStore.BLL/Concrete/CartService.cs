@@ -42,7 +42,7 @@ namespace TechStore.BLL.Concrete
                 var product = _productDal.GetById(item.ProductID);
                 if (product != null)
                 {
-                    item.ProductName = product.ProductName;
+                    item.ProductName = product.Productname;
                     item.Price = product.Price;
                 }
             }

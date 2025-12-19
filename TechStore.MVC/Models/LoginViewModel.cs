@@ -8,6 +8,7 @@ namespace TechStore.MVC.Models
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Введіть пароль")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }

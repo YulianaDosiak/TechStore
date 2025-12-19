@@ -1,65 +1,88 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TechStore.BLL.Interfaces; // Використовуємо BLL, а не DAL
+using System.Linq;
+using TechStore.BLL.Interfaces;
 using TechStore.DTO;
 using TechStore.MVC.Models;
 
 namespace TechStore.MVC.Controllers
 {
-    [Authorize] // Авторизація
+    [Authorize]
     public class CategoryController : Controller
     {
-        private readonly ICategoryService _categoryService; // Тільки сервіс!
+        private readonly ICategoryService _categoryService;
+        private readonly IProductService _productService;
         private readonly IMapper _mapper;
         private readonly ILogger<CategoryController> _logger;
 
-        // Інверсія залежностей (DI) через конструктор
-        public CategoryController(ICategoryService categoryService, IMapper mapper, ILogger<CategoryController> logger)
+        public CategoryController(
+            ICategoryService categoryService,
+            IProductService productService,
+            IMapper mapper,
+            ILogger<CategoryController> logger)
         {
             _categoryService = categoryService;
+            _productService = productService;
             _mapper = mapper;
             _logger = logger;
         }
 
-        // READ
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
-            var dtos = _categoryService.GetAllCategories();
-            // Використання AutoMapper
-            var viewModels = _mapper.Map<IEnumerable<CategoryViewModel>>(dtos);
-            return View(viewModels);
+            var viewModel = new CategoryIndexViewModel();
+
+            var categoryDtos = _categoryService.GetAllCategories();
+            viewModel.Categories = _mapper.Map<IEnumerable<CategoryViewModel>>(categoryDtos);
+
+            if (id.HasValue)
+            {
+                viewModel.SelectedCategoryId = id.Value;
+
+                var allProducts = _productService.GetAllProducts();
+
+                var filteredProducts = allProducts
+                                        .Where(p => p.CategoryID == id.Value)
+                                        .ToList();
+
+                viewModel.Products = _mapper.Map<IEnumerable<ProductViewModel>>(filteredProducts);
+
+                if (!filteredProducts.Any() && allProducts.Any())
+                {
+                    foreach (var p in allProducts)
+                    {
+                        Console.WriteLine($"Product: {p.Productname}, CatID: {p.CategoryID}");
+                    }
+                }
+            }
+
+            return View(viewModel);
         }
 
-        // CREATE (GET)
         public IActionResult Create() => View();
 
-        // CREATE (POST)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(CategoryViewModel model)
         {
-            // Валідація даних
             if (ModelState.IsValid)
             {
                 var dto = _mapper.Map<Category>(model);
-                _categoryService.CreateCategory(dto); // Метод BLL
+                _categoryService.AddCategory(dto);
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
         }
 
-        // EDIT (GET)
         public IActionResult Edit(int id)
         {
-            var dto = _categoryService.GetAllCategories().FirstOrDefault(c => c.CategoryID == id); // Краще мати метод GetById у сервісі
+            var dto = _categoryService.GetCategoryById(id);
             if (dto == null) return NotFound();
-
-            var viewModel = _mapper.Map<CategoryViewModel>(dto);
-            return View(viewModel);
+            return View(_mapper.Map<CategoryViewModel>(dto));
         }
 
-        // EDIT (POST)
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(CategoryViewModel model)
         {
             if (ModelState.IsValid)
@@ -70,15 +93,28 @@ namespace TechStore.MVC.Controllers
             }
             return View(model);
         }
-
-        // DELETE
-        // Логування спроби без прав (якщо користувач не адмін, наприклад)
         public IActionResult Delete(int id)
         {
-            // Приклад логування
-            _logger.LogInformation($"User {User.Identity.Name} is deleting category {id}");
+            var allProducts = _productService.GetAllProducts();
 
-            _categoryService.DeleteCategory(id);
+            bool hasProducts = allProducts.Any(p => p.CategoryID == id);
+
+            if (hasProducts)
+            {
+                TempData["Error"] = "Увага! Неможливо видалити категорію, бо в ній є товари. Спочатку видаліть товари.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                _categoryService.DeleteCategory(id);
+                TempData["Success"] = "Категорію успішно видалено.";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Помилка бази даних: {ex.Message}";
+            }
+
             return RedirectToAction(nameof(Index));
         }
     }

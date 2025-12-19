@@ -1,32 +1,98 @@
-﻿@model IEnumerable<TechStore.DTO.Category>
+﻿@model TechStore.MVC.Models.CategoryIndexViewModel
+
 @{
-    ViewData["Title"] = "Управління категоріями";
+    ViewData["Title"] = "Категорії та Товари";
 }
 
-<h2>CRUD Категорій</h2>
-<p><a asp-action="Create" class="btn btn-primary">Створити нову</a></p>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Увага!</strong> @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Назва</th>
-            <th>Дії</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Управління категоріями</h2>
+    <a asp-action="Create" class="btn btn-success"><i class="bi bi-plus-circle"></i> Створити нову категорію</a>
+</div>
+
+<div class="card shadow-sm mb-5">
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Назва категорії</th>
+                    <th class="text-end">Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Categories)
+                {
+                    string activeClass = (item.CategoryID == Model.SelectedCategoryId) ? "table-primary" : "";
+
+                    <tr class="@activeClass">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+                            @if (item.CategoryID == Model.SelectedCategoryId)
+                            {
+                                <span class="badge bg-primary ms-2">Обрано</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-action="Index" asp-route-id="@item.CategoryID" class="btn btn-sm btn-outline-primary">
+                                Дивитись товари
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.CategoryID" class="btn btn-sm btn-warning">
+                                Редагувати
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.CategoryID" class="btn btn-sm btn-danger" onclick="return confirm('Ви впевнені, що хочете видалити цю категорію?');">
+                                Видалити
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.SelectedCategoryId != null)
+{
+    <div id="products-section" class="mt-4">
+        <h3 class="mb-3 text-primary">Товари у вибраній категорії</h3>
+
+        @if (Model.Products != null && Model.Products.Any())
         {
-            <tr>
-                <td>@item.CategoryID</td>
-                <td>@item.CategoryName</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CategoryID" class="btn btn-sm btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.CategoryID"
-                       class="btn btn-sm btn-danger"
-                       onclick="return confirm('Ви впевнені, що хочете видалити?');">Delete</a>
-                </td>
-            </tr>
+            <div class="card shadow-sm border-primary">
+                <div class="card-body p-0">
+                    <table class="table table-striped mb-0">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Назва товару</th>
+                                <th>Ціна</th>
+                                <th>ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prod in Model.Products)
+                            {
+                                <tr>
+                                    <td>@prod.ProductName</td>
+                                    <td>@prod.Price.ToString("C")</td>
+                                    <td><small class="text-muted">#@prod.ProductID</small></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+        else
+        {
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> У цій категорії ще немає товарів. Ви можете безпечно видалити її.
+            </div>
+        }
+    </div>
+}

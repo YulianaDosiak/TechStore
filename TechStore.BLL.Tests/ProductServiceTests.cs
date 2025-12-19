@@ -23,7 +23,7 @@ namespace TechStore.BLL.Tests
         [Test]
         public void AddProduct_ValidData_CallsCreate()
         {
-            var product = new Product { ProductName = "Phone", Price = 1000 };
+            var product = new Product { Productname = "Phone", Price = 1000 };
             _productService.AddProduct(product);
             _mockProductDal.Verify(dal => dal.Create(product), Times.Once);
         }
@@ -31,7 +31,7 @@ namespace TechStore.BLL.Tests
         [Test]
         public void AddProduct_NegativePrice_ThrowsException()
         {
-            var product = new Product { ProductName = "Phone", Price = -500 };
+            var product = new Product { Productname = "Phone", Price = -500 };
 
             Assert.Throws<ArgumentException>(() => _productService.AddProduct(product));
 

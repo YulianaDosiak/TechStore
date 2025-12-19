@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TechStore.BLL.Helpers;
 using TechStore.BLL.Interfaces;
 using TechStore.DAL.Interfaces;
@@ -19,21 +20,32 @@ namespace TechStore.BLL.Concrete
         {
             var users = _userDal.GetAll();
 
+            if (users == null || !users.Any()) return null;
+
             string passwordHash = PasswordHasher.HashPassword(password);
 
-            return users.FirstOrDefault(u => u.Username == username && u.Password == passwordHash);
+            var user = users.FirstOrDefault(u =>
+                u.Username != null &&
+                u.Username.Trim().Equals(username.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            if (user != null && user.Password == passwordHash)
+            {
+                return user;
+            }
+
+            return null;
         }
 
         public bool Register(User newUser)
         {
             var users = _userDal.GetAll();
-            if (users.Any(u => u.Username == newUser.Username))
+
+            if (users.Any(u => u.Username.Trim().Equals(newUser.Username.Trim(), StringComparison.OrdinalIgnoreCase)))
             {
                 return false;
             }
 
             newUser.Password = PasswordHasher.HashPassword(newUser.Password);
-
             _userDal.Create(newUser);
             return true;
         }

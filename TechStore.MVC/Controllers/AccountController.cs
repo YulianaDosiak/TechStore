@@ -3,48 +3,47 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TechStore.BLL.Interfaces;
-using TechStore.MVC.Models; // Для LoginViewModel
+using TechStore.DTO;
+using TechStore.MVC.Models;
+using AutoMapper;
 
 namespace TechStore.MVC.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
-        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IAuthService authService, ILogger<AccountController> logger)
+        public AccountController(IAuthService authService)
         {
             _authService = authService;
-            _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult Login() => View();
+        public IActionResult Login()
+        {
+            return View();
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public IActionResult Login(LoginViewModel model)
         {
-            if (ModelState.IsValid) // Валідація
+            if (ModelState.IsValid)
             {
                 var user = _authService.Login(model.Username, model.Password);
                 if (user != null)
                 {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.Username),
-                        new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
-                        new Claim(ClaimTypes.Role, "Buyer") // Роль Покупець
-                    };
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)));
-
-                    return RedirectToAction("Index", "Product");
+                    Authenticate(user);
+                    return RedirectToAction("Index", "Category");
                 }
-                _logger.LogWarning($"Failed login attempt for {model.Username}");
+                ModelState.AddModelError("", "Невірний логін або пароль");
             }
-            ViewBag.Error = "Невірний логін або пароль";
             return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
         }
 
         public async Task<IActionResult> Logout()
@@ -53,24 +52,17 @@ namespace TechStore.MVC.Controllers
             return RedirectToAction("Login");
         }
 
-        // Логування спроби без прав
-        public IActionResult AccessDenied()
+        private void Authenticate(User user)
         {
-            _logger.LogWarning($"Unauthorized access attempt by {User.Identity.Name}");
-            return View();
-        }
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username ?? "Unknown"),
+        
+        new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role ?? "User")
+    };
 
-        [HttpGet]
-        public IActionResult ForgotPassword()
-        {
-            return View(); // Саме тут програма шукає файл .cshtml
-        }
-
-        [HttpPost]
-        public IActionResult ForgotPassword(string email)
-        {
-            ViewBag.Message = "Інструкції відправлено (імітація).";
-            return View();
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
     }
 }

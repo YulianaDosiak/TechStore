@@ -1,25 +1,33 @@
-﻿@model TechStore.DTO.Category
+﻿@model TechStore.MVC.Models.CategoryViewModel
 
 @{
     ViewData["Title"] = "Створити категорію";
 }
 
-<div class="container mt-4">
-    <h2>Нова категорія</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div class="mb-3">
-                    <label class="form-label">Назва категорії</label>
-                    <input asp-for="CategoryName" class="form-control" required />
-                    <span asp-validation-for="CategoryName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Створити</button>
-                    <a asp-action="Index" class="btn btn-secondary">Назад</a>
-                </div>
-            </form>
-        </div>
+<h2>Створити нову категорію</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryName" class="form-label">Назва категорії</label>
+                <input asp-for="CategoryName" class="form-control" placeholder="Наприклад: Ноутбуки" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-success">Зберегти</button>
+                <a asp-action="Index" class="btn btn-secondary">Назад до списку</a>
+            </div>
+        </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -60,7 +60,7 @@ namespace TechStore.Test.DALEF
             var cat = _categoryDal.Create(new Category { CategoryName = "TestCatForCI" });
             _testCategoryId = cat.CategoryID;
 
-            var prod = _productDal.Create(new Product { ProductName = "TestProdForCI", CategoryID = _testCategoryId, Price = 10, Quantity = 50 });
+            var prod = _productDal.Create(new Product { Productname = "TestProdForCI", CategoryID = _testCategoryId, Price = 10, Quantity = 50 });
             _testProductId = prod.ProductID;
 
             var cart = _cartDal.Create(new Cart { UserID = _testUserId });
